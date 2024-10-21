@@ -21,6 +21,17 @@
   - Activează starea de încărcare (esteIncarcareInProgres = 1).
   - Resetează contorul de timp pentru a începe procesul de încărcare (timpUltimaActualizare = millis()).
   - Utilizează o întârziere (delay(DEBOUNCE_DELAY)) pentru a preveni multiple detectări rapide (debouncing).
+
+```
+void citireButonIncepe() {
+  int stareButonStart = digitalRead(BUTON_INCEPE);
+  if (stareButonStart == LOW) {// Verificăm dacă butonul este apăsat
+    delay(DEBOUNCE_DELAY);  // Anti-debouncing
+    esteIncarcareInProgres = 1;  // Se începe încărcarea
+    timpUltimaActualizare = millis();  // Resetează timpul pentru controlul bateriei
+  }
+}
+```
     
 # void citireButonOpreste()
    Ce face: Verifică dacă butonul de oprire (butonul conectat la pinul 2) este apăsat.
@@ -29,6 +40,17 @@
   - Dezactivează starea de încărcare (esteIncarcareInProgres = 0).
   - Resetează nivelul de încărcare la 0 (nivelIncarcare = 0).
   - Utilizează și aici debouncing pentru a preveni multiple detectări rapide ale apăsării.
+
+```
+void citireButonOpreste() {
+  int stareButonStop = digitalRead(BUTON_OPRESTE);
+  if (stareButonStop == LOW) {// Verificăm dacă butonul este apăsat
+    delay(DEBOUNCE_DELAY);  // Anti-debouncing
+    esteIncarcareInProgres = 0;  // Se oprește încărcarea
+    nivelIncarcare = 0;  // Resetează nivelul de încărcare
+  }
+}
+```
     
 # void actualizeazaLEDuri()
    Ce face: Controlează starea LED-urilor în funcție de procesul de încărcare.
@@ -41,6 +63,24 @@ Detalii:
    - LED-urile roșu și verde sunt stinse.
    - Toate LED-urile albastre care indică progresul încărcării sunt stinse.
 
+```
+void actualizeazaLEDuri() {
+  if (esteIncarcareInProgres) {
+    digitalWrite(GREEN_LED, LOW);  // LED verde stins când se încarcă
+    digitalWrite(RED_LED, HIGH);   // LED roșu aprins când se încarcă
+    digitalWrite(BLUE_LED, LOW);   // LED albastru stins
+  } else {
+    digitalWrite(GREEN_LED, LOW);  // LED verde stins când nu se încarcă
+    digitalWrite(RED_LED, LOW);    // LED roșu stins când nu se încarcă
+    digitalWrite(BLUE_LED, HIGH);  // LED albastru aprins
+    digitalWrite(LED_ALBASTRU_1, LOW);
+    digitalWrite(LED_ALBASTRU_2, LOW);
+    digitalWrite(LED_ALBASTRU_3, LOW);
+    digitalWrite(LED_ALBASTRU_4, LOW);
+  }
+}
+```
+
 # void secventaIncarcare()
    Ce face: Controlează secvența de încărcare a bateriei, aprinzând progresiv LED-urile albastre.
 Detalii:
@@ -52,6 +92,61 @@ Detalii:
    - La nivelul 3, toate cele 4 LED-uri albastre sunt aprinse.
    - La nivelul 4, încărcarea este completă, toate LED-urile albastre rămân aprinse, iar procesul de încărcare se oprește automat (esteIncarcareInProgres = 0).
    - Funcția include și întârzieri scurte pentru a simula vizual un efect de progres pe LED-uri.
+
+```
+void secventaIncarcare() {
+  if (esteIncarcareInProgres) {
+    unsigned long timpCurent = millis();  // Obține timpul curent
+
+    // Controlează intervalul de încărcare
+    if (timpCurent - timpUltimaActualizare >= INTERVAL_INCARCARE) {
+      timpUltimaActualizare = timpCurent;
+      nivelIncarcare++;  // Crește nivelul de încărcare
+      if (nivelIncarcare > 4) {
+        nivelIncarcare = 0;
+        esteIncarcareInProgres = 0;  // Oprește încărcarea când bateria este completă
+      }
+    }
+
+    // Control LED-uri pentru progresul bateriei
+    switch (nivelIncarcare) {
+      case 0:
+        digitalWrite(LED_ALBASTRU_1, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_1, HIGH);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_2, LOW);
+        digitalWrite(LED_ALBASTRU_3, LOW);
+        digitalWrite(LED_ALBASTRU_4, LOW);
+        break;
+      case 1:
+        digitalWrite(LED_ALBASTRU_1, HIGH);
+        digitalWrite(LED_ALBASTRU_2, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_2, HIGH);
+        delay(500);
+        break;
+      case 2:
+        digitalWrite(LED_ALBASTRU_2, HIGH);
+        digitalWrite(LED_ALBASTRU_3, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_3, HIGH);
+        delay(500);
+        break;
+      case 3:
+        digitalWrite(LED_ALBASTRU_3, HIGH);
+        digitalWrite(LED_ALBASTRU_4, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_4, HIGH);
+        delay(500);
+        break;
+      case 4:
+        digitalWrite(LED_ALBASTRU_4, HIGH);
+        break;
+    }
+  }
+}
+```
 
 ## Poze ale setup-ului fizic
 ![Poza 1 robo](https://github.com/user-attachments/assets/7b8e2189-875d-43c7-83ba-a880810b91f4)

@@ -154,6 +154,8 @@ void secventaIncarcare() {
 ![Poza 3 robo](https://github.com/user-attachments/assets/fb0ecb40-c7fc-4b7b-9523-96b906dc4ac8)
 
 ## Video cu funcționalitatea montajului fizic
+<iframe width="560" height="315" src="(https://www.youtube.com/watch?v=vYdteI34t-o&ab_channel=AlexandruApostu)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ## Schema electrică (TinkerCAD)
 - Conectarea LED-urilor albastre la pinii 7, 8, 9 și 10.

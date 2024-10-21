@@ -10,6 +10,49 @@
 - Linii de legătură
 - Placa Arduino Uno R3 ATmega328P/PA
 
+## Descriere
+
+### Setup-ul fizic
+
+# void citireButonIncepe()
+   Ce face: Verifică dacă butonul de start (butonul conectat la pinul 3) este apăsat.
+  Detalii: 
+  - Când butonul este apăsat (detectat ca LOW), funcția inițiază procesul de încărcare:
+  - Activează starea de încărcare (esteIncarcareInProgres = 1).
+  - Resetează contorul de timp pentru a începe procesul de încărcare (timpUltimaActualizare = millis()).
+  - Utilizează o întârziere (delay(DEBOUNCE_DELAY)) pentru a preveni multiple detectări rapide (debouncing).
+    
+# void citireButonOpreste()
+   Ce face: Verifică dacă butonul de oprire (butonul conectat la pinul 2) este apăsat.
+  Detalii: 
+  - Când butonul de oprire este apăsat (detectat ca LOW), funcția oprește procesul de încărcare:
+  - Dezactivează starea de încărcare (esteIncarcareInProgres = 0).
+  - Resetează nivelul de încărcare la 0 (nivelIncarcare = 0).
+  - Utilizează și aici debouncing pentru a preveni multiple detectări rapide ale apăsării.
+    
+# void actualizeazaLEDuri()
+   Ce face: Controlează starea LED-urilor în funcție de procesul de încărcare.
+Detalii:
+   - Dacă încărcarea este în progres (esteIncarcareInProgres == 1):
+   - LED-ul roșu este aprins (digitalWrite(RED_LED, HIGH)).
+   - LED-ul verde și albastru sunt stinse (digitalWrite(GREEN_LED, LOW) și digitalWrite(BLUE_LED, LOW)).
+ Dacă încărcarea nu este activă:
+   - LED-ul albastru este aprins (digitalWrite(BLUE_LED, HIGH)).
+   - LED-urile roșu și verde sunt stinse.
+   - Toate LED-urile albastre care indică progresul încărcării sunt stinse.
+
+# void secventaIncarcare()
+   Ce face: Controlează secvența de încărcare a bateriei, aprinzând progresiv LED-urile albastre.
+Detalii:
+   - Când încărcarea este activă (esteIncarcareInProgres == 1), verifică dacă a trecut un interval de 3 secunde (INTERVAL_INCARCARE).
+   - Dacă acest interval a trecut, nivelul de încărcare crește (nivelIncarcare++), iar în funcție de nivel, LED-urile albastre se aprind treptat, simulând încărcarea bateriei:
+   - La nivelul 0, toate LED-urile sunt stinse, dar primul LED începe să clipească.
+   - La nivelul 1, primul și al doilea LED albastru sunt aprinse.
+   - La nivelul 2, LED-urile 1, 2 și 3 sunt aprinse.
+   - La nivelul 3, toate cele 4 LED-uri albastre sunt aprinse.
+   - La nivelul 4, încărcarea este completă, toate LED-urile albastre rămân aprinse, iar procesul de încărcare se oprește automat (esteIncarcareInProgres = 0).
+   - Funcția include și întârzieri scurte pentru a simula vizual un efect de progres pe LED-uri.
+
 ## Poze ale setup-ului fizic
 ![Poza 1 robo](https://github.com/user-attachments/assets/7b8e2189-875d-43c7-83ba-a880810b91f4)
 ![Poza 2 robo](https://github.com/user-attachments/assets/96b4e494-892d-44e8-81d7-b71011e935e2)
@@ -18,6 +61,10 @@
 ## Video cu funcționalitatea montajului fizic
 
 ## Schema electrică (TinkerCAD)
+- Conectarea LED-urilor albastre la pinii 7, 8, 9 și 10.
+- Conectarea LED-ului RGB la pinii 4, 5 și 6.
+- Conectarea butonului de start la pinul 3 și a butonului de stop la pinul 2.
+- Utilizarea rezistențelor pentru protecția LED-urilor și pentru stabilizarea butoanelor.
 ![image](https://github.com/user-attachments/assets/d7585af1-ac0b-4dbe-8792-02024aa77800)
 ![image](https://github.com/user-attachments/assets/656cfee2-b10f-4a02-98b9-a2d16b7902db)
 

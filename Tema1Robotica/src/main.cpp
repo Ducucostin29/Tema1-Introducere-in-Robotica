@@ -4,10 +4,6 @@
 #define LED_ALBASTRU_2 9
 #define LED_ALBASTRU_3 8
 #define LED_ALBASTRU_4 7
-//#define RED_LED 4
-//#define GREEN_LED 5
-//#define BLUE_LED 6
-
 #define RED_LED 6
 #define GREEN_LED 4
 #define BLUE_LED 5

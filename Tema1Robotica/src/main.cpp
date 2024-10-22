@@ -84,9 +84,9 @@ void actualizeazaLEDuri() {
     digitalWrite(RED_LED, HIGH);   // LED roșu aprins când se încarcă
     digitalWrite(BLUE_LED, LOW);   // LED albastru stins
   } else {
-    digitalWrite(GREEN_LED, LOW);  // LED verde stins când nu se încarcă
+    digitalWrite(GREEN_LED, HIGH);  // LED verde stins când nu se încarcă
     digitalWrite(RED_LED, LOW);    // LED roșu stins când nu se încarcă
-    digitalWrite(BLUE_LED, HIGH);  // LED albastru aprins
+    digitalWrite(BLUE_LED, LOW);  // LED albastru aprins
     digitalWrite(LED_ALBASTRU_1, LOW);
     digitalWrite(LED_ALBASTRU_2, LOW);
     digitalWrite(LED_ALBASTRU_3, LOW);
@@ -147,6 +147,16 @@ void secventaIncarcare() {
         break;
       case 4:
         digitalWrite(LED_ALBASTRU_4, HIGH);
+        digitalWrite(LED_ALBASTRU_1, LOW);
+        digitalWrite(LED_ALBASTRU_2, LOW);
+        digitalWrite(LED_ALBASTRU_3, LOW);
+        digitalWrite(LED_ALBASTRU_4, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_1, HIGH);
+        digitalWrite(LED_ALBASTRU_2, HIGH);
+        digitalWrite(LED_ALBASTRU_3, HIGH);
+        digitalWrite(LED_ALBASTRU_4, HIGH);
+        delay(500);
         break;
     }
   }

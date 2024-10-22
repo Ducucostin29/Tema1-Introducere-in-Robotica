@@ -11,6 +11,7 @@
 #define BUTON_INCEPE 3
 #define BUTON_OPRESTE 2
 #define DEBOUNCE_DELAY 20
+#define DEBOUNCE_DELAY_STOP 50
 
 // Variabile globale
 int nivelIncarcare = 0;  // Nivelul curent al încărcării bateriei
@@ -66,9 +67,19 @@ void citireButonIncepe() {
 void citireButonOpreste() {
   int stareButonStop = digitalRead(BUTON_OPRESTE);
   if (stareButonStop == LOW) {// Verificăm dacă butonul este apăsat
-    delay(DEBOUNCE_DELAY);  // Anti-debouncing
+    delay(DEBOUNCE_DELAY_STOP);  // Anti-debouncing
     esteIncarcareInProgres = 0;  // Se oprește încărcarea
     nivelIncarcare = 0;  // Resetează nivelul de încărcare
+    digitalWrite(LED_ALBASTRU_1, LOW);
+    digitalWrite(LED_ALBASTRU_2, LOW);
+    digitalWrite(LED_ALBASTRU_3, LOW);
+    digitalWrite(LED_ALBASTRU_4, LOW);
+    delay(500);
+    digitalWrite(LED_ALBASTRU_1, HIGH);
+    digitalWrite(LED_ALBASTRU_2, HIGH);
+    digitalWrite(LED_ALBASTRU_3, HIGH);
+    digitalWrite(LED_ALBASTRU_4, HIGH);
+    delay(500);
   }
 }
 

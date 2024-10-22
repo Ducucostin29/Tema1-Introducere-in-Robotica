@@ -24,7 +24,6 @@ void citireButonOpreste();
 void actualizeazaLEDuri();
 void secventaIncarcare();
 
-
 // Funcția de inițializare (setup)
 void setup() {
   // Configurare pini ca OUTPUT sau INPUT
@@ -62,24 +61,27 @@ void citireButonIncepe() {
 
 /**
  * Funcția citireButonOpreste verifică dacă butonul de stop este apăsat
- * și oprește procesul de încărcare.
+ * și oprește procesul de încărcare doar dacă încărcarea este în curs.
  */
 void citireButonOpreste() {
-  int stareButonStop = digitalRead(BUTON_OPRESTE);
-  if (stareButonStop == LOW) {// Verificăm dacă butonul este apăsat
-    delay(DEBOUNCE_DELAY_STOP);  // Anti-debouncing
-    esteIncarcareInProgres = 0;  // Se oprește încărcarea
-    nivelIncarcare = 0;  // Resetează nivelul de încărcare
-    digitalWrite(LED_ALBASTRU_1, LOW);
-    digitalWrite(LED_ALBASTRU_2, LOW);
-    digitalWrite(LED_ALBASTRU_3, LOW);
-    digitalWrite(LED_ALBASTRU_4, LOW);
-    delay(500);
-    digitalWrite(LED_ALBASTRU_1, HIGH);
-    digitalWrite(LED_ALBASTRU_2, HIGH);
-    digitalWrite(LED_ALBASTRU_3, HIGH);
-    digitalWrite(LED_ALBASTRU_4, HIGH);
-    delay(500);
+  // Butonul de stop este verificat doar dacă încărcarea este în progres
+  if (esteIncarcareInProgres == 1) { 
+    int stareButonStop = digitalRead(BUTON_OPRESTE);
+    if (stareButonStop == LOW) {  // Verificăm dacă butonul este apăsat
+      delay(DEBOUNCE_DELAY_STOP);  // Anti-debouncing
+      esteIncarcareInProgres = 0;  // Se oprește încărcarea
+      nivelIncarcare = 0;  // Resetează nivelul de încărcare
+      digitalWrite(LED_ALBASTRU_1, LOW);
+      digitalWrite(LED_ALBASTRU_2, LOW);
+      digitalWrite(LED_ALBASTRU_3, LOW);
+      digitalWrite(LED_ALBASTRU_4, LOW);
+      delay(500);
+      digitalWrite(LED_ALBASTRU_1, HIGH);
+      digitalWrite(LED_ALBASTRU_2, HIGH);
+      digitalWrite(LED_ALBASTRU_3, HIGH);
+      digitalWrite(LED_ALBASTRU_4, HIGH);
+      delay(500);
+    }
   }
 }
 
@@ -95,9 +97,9 @@ void actualizeazaLEDuri() {
     digitalWrite(RED_LED, HIGH);   // LED roșu aprins când se încarcă
     digitalWrite(BLUE_LED, LOW);   // LED albastru stins
   } else {
-    digitalWrite(GREEN_LED, HIGH);  // LED verde stins când nu se încarcă
+    digitalWrite(GREEN_LED, HIGH);  // LED verde aprins când nu se încarcă
     digitalWrite(RED_LED, LOW);    // LED roșu stins când nu se încarcă
-    digitalWrite(BLUE_LED, LOW);  // LED albastru aprins
+    digitalWrite(BLUE_LED, LOW);  // LED albastru stins
     digitalWrite(LED_ALBASTRU_1, LOW);
     digitalWrite(LED_ALBASTRU_2, LOW);
     digitalWrite(LED_ALBASTRU_3, LOW);

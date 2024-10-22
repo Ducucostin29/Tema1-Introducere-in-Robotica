@@ -142,6 +142,16 @@ void secventaIncarcare() {
         break;
       case 4:
         digitalWrite(LED_ALBASTRU_4, HIGH);
+        digitalWrite(LED_ALBASTRU_1, LOW);
+        digitalWrite(LED_ALBASTRU_2, LOW);
+        digitalWrite(LED_ALBASTRU_3, LOW);
+        digitalWrite(LED_ALBASTRU_4, LOW);
+        delay(500);
+        digitalWrite(LED_ALBASTRU_1, HIGH);
+        digitalWrite(LED_ALBASTRU_2, HIGH);
+        digitalWrite(LED_ALBASTRU_3, HIGH);
+        digitalWrite(LED_ALBASTRU_4, HIGH);
+        delay(500);
         break;
     }
   }
